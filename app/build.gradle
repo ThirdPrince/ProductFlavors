@@ -1,0 +1,100 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        applicationId "com.example.productflavors"
+        minSdkVersion 16
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        flavorDimensions "default"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    productFlavors {
+
+        free {
+            applicationId 'com.lqr.demo.free'
+            versionCode 32
+            versionName '1.3.2'
+            manifestPlaceholders = [
+                    app_icon: "@mipmap/app_icon",
+                    app_name: "@string/app_name",
+            ]
+        }
+        china {
+            applicationId 'com.lqr.demo.china'
+            versionCode 32
+            versionName '1.3.2'
+            manifestPlaceholders = [
+                    app_icon: "@mipmap/app_icon",
+                    app_name: "@string/app_name",
+            ]
+        }
+        america {
+            applicationId 'com.lqr.demo.america'
+            versionCode 32
+            versionName '1.3.2'
+            manifestPlaceholders = [
+                    app_icon: "@mipmap/app_icon",
+                    app_name: "@string/app_name",
+            ]
+        }
+    }
+    // 多渠道相关设置
+    applicationVariants.all { variant ->
+        buildConfigField("String", "PROUDCT", "\"newapp\"")
+        buildConfigField("String[]", "DNSS", "{\"http://119.29.29.29\",\"http://8.8.8.8\",\"http://114.114.114.114\"}")
+        if (variant.flavorName == 'china') {
+            buildConfigField("String", "DNS", "\"http://119.29.29.29\"")
+        } else if (variant.flavorName == 'america') {
+            buildConfigField("String", "DNS", "\"http://8.8.8.8\"")
+        } else if (variant.flavorName == 'free') {
+            buildConfigField("String", "DNS", "\"http://114.114.114.114\"")
+        }
+    }
+    sourceSets {
+        sourceSets.all { sourceSet ->
+            // project.logger.log(LogLevel.ERROR, "sourceSet.name = " + sourceSet.name)
+            if (sourceSet.name.contains('Debug') || sourceSet.name.contains('Release')) {
+                if (sourceSet.name.contains("china")) {
+                    sourceSet.java.srcDirs = ['support/entry/java']
+                    sourceSet.manifest.srcFile 'support/manifest/chinaapp/AndroidManifest.xml'
+                } else if(sourceSet.name.contains("free")){
+                    sourceSet.java.srcDirs = ['support/entry/java']
+                    sourceSet.manifest.srcFile 'support/manifest/freeapp/AndroidManifest.xml'
+                }  else{
+                    sourceSet.java.srcDirs = ['support/entry/java']
+                    sourceSet.manifest.srcFile 'support/manifest/americaapp/AndroidManifest.xml'
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+}

@@ -1,0 +1,24 @@
+keytool -list -v  -keystore fenghuo.keystore
+
+证书指纹:
+         MD5:63:A6:AF:42:35:FF:33:EA:B4:30:3B:BB:91:23:FD:D7
+         SHA1:0D:ED:5B:2A:C3:C6:40:44:B4:8C:97:EF:2B:FB:7E:6A:6C:86:24:47
+         签名算法名称:SHA1withRSA
+         版本: 3
+
+密码 ：fh147243com
+
+配置： signingConfigs {
+        release {
+            storeFile file('../signer/fenghuo.keystore')
+            storePassword 'fh147243com'
+            keyAlias 'fenghuo.keystore'
+            keyPassword 'fh147243com'
+        }
+        debug {
+            storeFile file('../signer/fenghuo.keystore')
+            storePassword 'fh147243com'
+            keyAlias 'fenghuo.keystore'
+            keyPassword 'fh147243com'
+        }
+    }
